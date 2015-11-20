@@ -27,7 +27,28 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
-import net.sf.eventengine.adapter.EventEngineAdapter;
+import com.l2jserver.gameserver.ThreadPoolManager;
+import com.l2jserver.gameserver.instancemanager.InstanceManager;
+import com.l2jserver.gameserver.model.actor.L2Playable;
+import com.l2jserver.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jserver.gameserver.model.events.EventType;
+import com.l2jserver.gameserver.model.events.ListenerRegisterType;
+import com.l2jserver.gameserver.model.events.annotations.Priority;
+import com.l2jserver.gameserver.model.events.annotations.RegisterEvent;
+import com.l2jserver.gameserver.model.events.annotations.RegisterType;
+import com.l2jserver.gameserver.model.events.impl.character.OnCreatureAttack;
+import com.l2jserver.gameserver.model.events.impl.character.OnCreatureKill;
+import com.l2jserver.gameserver.model.events.impl.character.OnCreatureSkillUse;
+import com.l2jserver.gameserver.model.events.impl.character.npc.OnNpcFirstTalk;
+import com.l2jserver.gameserver.model.events.impl.character.player.OnPlayerEquipItem;
+import com.l2jserver.gameserver.model.events.impl.character.player.OnPlayerLogin;
+import com.l2jserver.gameserver.model.events.impl.character.player.OnPlayerLogout;
+import com.l2jserver.gameserver.model.events.returns.TerminateReturn;
+import com.l2jserver.gameserver.model.quest.Quest;
+import com.l2jserver.gameserver.network.clientpackets.Say2;
+import com.l2jserver.gameserver.network.serverpackets.CreatureSay;
+import com.l2jserver.util.Rnd;
+
 import net.sf.eventengine.ai.NpcManager;
 import net.sf.eventengine.datatables.BuffListData;
 import net.sf.eventengine.datatables.ConfigData;
@@ -38,30 +59,20 @@ import net.sf.eventengine.events.handler.AbstractEvent;
 import net.sf.eventengine.events.holders.PlayerHolder;
 import net.sf.eventengine.task.EventEngineTask;
 
-import com.l2jserver.gameserver.ThreadPoolManager;
-import com.l2jserver.gameserver.instancemanager.InstanceManager;
-import com.l2jserver.gameserver.model.actor.L2Character;
-import com.l2jserver.gameserver.model.actor.L2Npc;
-import com.l2jserver.gameserver.model.actor.L2Playable;
-import com.l2jserver.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jserver.gameserver.model.items.L2Item;
-import com.l2jserver.gameserver.model.skills.Skill;
-import com.l2jserver.gameserver.network.clientpackets.Say2;
-import com.l2jserver.gameserver.network.serverpackets.CreatureSay;
-import com.l2jserver.util.Rnd;
-
 /**
  * @author fissban
  */
-public class EventEngineManager
+public class EventEngineManager extends Quest
 {
 	private static final Logger LOGGER = Logger.getLogger(EventEngineManager.class.getName());
 	
 	/**
 	 * Constructor
 	 */
-	private EventEngineManager()
+	public EventEngineManager()
 	{
+		super(-1, EventEngineManager.class.getSimpleName(), "EventEngineManager");
+		
 		load();
 	}
 	
@@ -72,8 +83,6 @@ public class EventEngineManager
 	{
 		try
 		{
-			// Load the adapter to L2J Core
-			EventEngineAdapter.class.newInstance();
 			LOGGER.info(EventEngineManager.class.getSimpleName() + ": Adapter loaded.");
 			// Load event configs
 			ConfigData.getInstance();
@@ -166,183 +175,204 @@ public class EventEngineManager
 	}
 	
 	// XXX LISTENERS -------------------------------------------------------------------------------------
-	/**
-	 * @param playable -> personaje o summon
-	 * @param target -> NO puede ser null
-	 * @return true -> solo en el caso de que no queremos q un ataque continue su progeso normal.
-	 */
-	public boolean listenerOnAttack(L2Playable playable, L2Character target)
+	// When a playable attack a character
+	@RegisterEvent(EventType.ON_CREATURE_ATTACK)
+	@RegisterType(ListenerRegisterType.GLOBAL)
+	@Priority(Integer.MAX_VALUE)
+	public TerminateReturn onPlayableAttack(OnCreatureAttack event)
 	{
-		if (_currentEvent != null)
+		if (_currentEvent == null)
 		{
-			try
-			{
-				return _currentEvent.listenerOnAttack(playable, target);
-			}
-			catch (Exception e)
-			{
-				LOGGER.warning(EventEngineManager.class.getSimpleName() + ": -> listenerOnAttack() " + e);
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * @param player -> personaje o summon
-	 * @param target -> puede ser null
-	 * @return true -> solo en el caso de que no queremos de una habilidad no continue su progreso normal.
-	 */
-	public boolean listenerOnUseSkill(L2Playable playable, L2Character target, Skill skill)
-	{
-		// Si no se esta corriendo no continuar el listener.
-		if (_currentEvent != null)
-		{
-			try
-			{
-				return _currentEvent.listenerOnUseSkill(playable, target, skill);
-			}
-			catch (Exception e)
-			{
-				LOGGER.warning(EventEngineManager.class.getSimpleName() + ": -> listenerOnUseSkill() " + e);
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * @param playable -> personaje o summon
-	 * @param target -> No puede ser null
-	 */
-	public void listenerOnKill(L2Playable playable, L2Character target)
-	{
-		if (_currentEvent != null)
-		{
-			try
-			{
-				_currentEvent.listenerOnKill(playable, target);
-			}
-			catch (Exception e)
-			{
-				LOGGER.warning(EventEngineManager.class.getSimpleName() + ": -> listenerOnKill() " + e);
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	/**
-	 * @param player
-	 * @param target
-	 */
-	public boolean listenerOnInteract(L2PcInstance player, L2Npc target)
-	{
-		if (_currentEvent != null)
-		{
-			try
-			{
-				return _currentEvent.listenerOnInteract(player, target);
-			}
-			catch (Exception e)
-			{
-				LOGGER.warning(EventEngineManager.class.getSimpleName() + ": -> listenerOnInteract() " + e);
-				e.printStackTrace();
-			}
+			return null;
 		}
 		
-		return true;
-	}
-	
-	/**
-	 * @param player
-	 */
-	public void listenerOnDeath(L2PcInstance player)
-	{
-		// Si no se esta corriendo no continuar el listener.
-		if (_currentEvent != null)
+		try
 		{
-			try
+			if ((event.getAttacker() == null) || !event.getAttacker().isPlayable())
 			{
-				_currentEvent.listenerOnDeath(player);
+				return null;
 			}
-			catch (Exception e)
+			
+			if (_currentEvent.listenerOnAttack((L2Playable) event.getAttacker(), event.getTarget()))
 			{
-				LOGGER.warning(EventEngineManager.class.getSimpleName() + ": -> listenerOnDeath() " + e);
-				e.printStackTrace();
+				return new TerminateReturn(true, true, true);
 			}
 		}
+		catch (Exception e)
+		{
+			LOGGER.warning(EventEngineManager.class.getSimpleName() + ": -> listenerOnAttack() " + e);
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 	
-	/**
-	 * Listener when the player logouts
-	 * @param player
-	 */
-	public void listenerOnLogout(L2PcInstance player)
+	// When a playable uses a skill
+	@RegisterEvent(EventType.ON_CREATURE_SKILL_USE)
+	@RegisterType(ListenerRegisterType.GLOBAL)
+	@Priority(Integer.MAX_VALUE)
+	public TerminateReturn onPlayableUseSkill(OnCreatureSkillUse event)
+	{
+		// Si no se esta corriendo no continuar el listener.
+		if (_currentEvent == null)
+		{
+			return null;
+		}
+		
+		try
+		{
+			if (!event.getCaster().isPlayable())
+			{
+				return null;
+			}
+			
+			if (_currentEvent.listenerOnUseSkill((L2Playable) event.getCaster(), event.getTarget(), event.getSkill()))
+			{
+				return new TerminateReturn(true, true, true);
+			}
+		}
+		catch (Exception e)
+		{
+			LOGGER.warning(EventEngineManager.class.getSimpleName() + ": -> listenerOnUseSkill() " + e);
+			e.printStackTrace();
+		}
+		
+		return null;
+		
+	}
+	
+	// When a playable kills a character and a player dies
+	@RegisterEvent(EventType.ON_CREATURE_KILL)
+	@RegisterType(ListenerRegisterType.GLOBAL)
+	@Priority(Integer.MAX_VALUE)
+	public TerminateReturn onCharacterKill(OnCreatureKill event)
+	{
+		if (_currentEvent == null)
+		{
+			return null;
+		}
+		
+		try
+		{
+			if ((event.getAttacker() != null) && event.getAttacker().isPlayable())
+			{
+				_currentEvent.listenerOnKill((L2Playable) event.getAttacker(), event.getTarget());
+			}
+			
+			if (event.getTarget().isPlayer())
+			{
+				_currentEvent.listenerOnDeath((L2PcInstance) event.getTarget());
+			}
+			
+		}
+		catch (Exception e)
+		{
+			LOGGER.warning(EventEngineManager.class.getSimpleName() + ": -> listenerOnKill() " + e);
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	// When a player talks with npc
+	@RegisterEvent(EventType.ON_NPC_FIRST_TALK)
+	@RegisterType(ListenerRegisterType.GLOBAL_NPCS)
+	@Priority(Integer.MAX_VALUE)
+	public void onNpcInteract(OnNpcFirstTalk event)
+	{
+		if (_currentEvent == null)
+		{
+			return;
+		}
+		
+		try
+		{
+			_currentEvent.listenerOnInteract(event.getActiveChar(), event.getNpc());
+		}
+		catch (Exception e)
+		{
+			LOGGER.warning(EventEngineManager.class.getSimpleName() + ": -> listenerOnInteract() " + e);
+			e.printStackTrace();
+		}
+		
+		return;
+	}
+	
+	// When the player exits
+	@RegisterEvent(EventType.ON_PLAYER_LOGOUT)
+	@RegisterType(ListenerRegisterType.GLOBAL_PLAYERS)
+	@Priority(Integer.MAX_VALUE)
+	public void onPlayerLogout(OnPlayerLogout event)
 	{
 		// Si no se esta corriendo no continuar el listener.
 		if (_currentEvent == null)
 		{
 			if (_state == EventEngineState.REGISTER || _state == EventEngineState.VOTING)
 			{
-				removeVote(player);
-				unRegisterPlayer(player);
-				return;
+				removeVote(event.getActiveChar());
+				unRegisterPlayer(event.getActiveChar());
 			}
+			
+			return;
 		}
-		else
-		{
-			if (_currentEvent.getPlayerEventManager().isPlayableInEvent(player))
-			{
-				try
-				{
-					PlayerHolder ph = _currentEvent.getPlayerEventManager().getEventPlayer(player);
-					// recobramos el color del titulo original
-					ph.recoverOriginalColorTitle();
-					// recobramos el titulo original
-					ph.recoverOriginalTitle();
-					// remobemos al personaje del mundo creado
-					InstanceManager.getInstance().getWorld(ph.getDinamicInstanceId()).removeAllowed(ph.getPcInstance().getObjectId());
-					
-					_currentEvent.getPlayerEventManager().getAllEventPlayers().remove(ph);
-				}
-				catch (Exception e)
-				{
-					LOGGER.warning(EventEngineManager.class.getSimpleName() + ": -> listenerOnLogout() " + e);
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
-	/**
-	 * @param player
-	 */
-	public void listenerOnLogin(L2PcInstance player)
-	{
-		player.sendPacket(new CreatureSay(0, Say2.PARTYROOM_COMMANDER, "", MessageData.getInstance().getMsgByLang(player, "event_login_participate", true)));
-		player.sendPacket(new CreatureSay(0, Say2.PARTYROOM_COMMANDER, "", MessageData.getInstance().getMsgByLang(player, "event_login_vote", true)));
-	}
-	
-	/**
-	 * @param player
-	 * @return boolean -> true solo en el caso de que no queremos que no se pueda usar un item
-	 */
-	public boolean listenerOnUseItem(L2PcInstance player, L2Item item)
-	{
-		// Si no se esta corriendo no continuar el listener.
-		if (_currentEvent != null)
+		
+		if (_currentEvent.getPlayerEventManager().isPlayableInEvent(event.getActiveChar()))
 		{
 			try
 			{
-				return _currentEvent.listenerOnUseItem(player, item);
+				PlayerHolder ph = _currentEvent.getPlayerEventManager().getEventPlayer(event.getActiveChar());
+				// recobramos el color del titulo original
+				ph.recoverOriginalColorTitle();
+				// recobramos el titulo original
+				ph.recoverOriginalTitle();
+				// remobemos al personaje del mundo creado
+				InstanceManager.getInstance().getWorld(ph.getDinamicInstanceId()).removeAllowed(ph.getPcInstance().getObjectId());
+				
+				_currentEvent.getPlayerEventManager().getAllEventPlayers().remove(ph);
 			}
 			catch (Exception e)
 			{
-				LOGGER.warning(EventEngineManager.class.getSimpleName() + ": -> listenerOnUseItem() " + e);
+				LOGGER.warning(EventEngineManager.class.getSimpleName() + ": -> listenerOnLogout() " + e);
 				e.printStackTrace();
 			}
 		}
-		return false;
+	}
+	
+	// When the player logins
+	@RegisterEvent(EventType.ON_PLAYER_LOGIN)
+	@RegisterType(ListenerRegisterType.GLOBAL_PLAYERS)
+	@Priority(Integer.MAX_VALUE)
+	public void onPlayerLogin(OnPlayerLogin event)
+	{
+		event.getActiveChar().sendPacket(new CreatureSay(0, Say2.PARTYROOM_COMMANDER, "", MessageData.getInstance().getMsgByLang(event.getActiveChar(), "event_login_participate", true)));
+		event.getActiveChar().sendPacket(new CreatureSay(0, Say2.PARTYROOM_COMMANDER, "", MessageData.getInstance().getMsgByLang(event.getActiveChar(), "event_login_vote", true)));
+	}
+	
+	// When a player equips an item
+	@RegisterEvent(EventType.ON_PLAYER_EQUIP_ITEM)
+	@RegisterType(ListenerRegisterType.GLOBAL_PLAYERS)
+	@Priority(Integer.MAX_VALUE)
+	public TerminateReturn onUseItem(OnPlayerEquipItem event)
+	{
+		// Si no se esta corriendo no continuar el listener.
+		if (_currentEvent == null)
+		{
+			return null;
+		}
+		
+		try
+		{
+			if (_currentEvent.listenerOnUseItem(event.getActiveChar(), event.getItem().getItem()))
+			{
+				return new TerminateReturn(true, true, true);
+			}
+		}
+		catch (Exception e)
+		{
+			LOGGER.warning(EventEngineManager.class.getSimpleName() + ": -> listenerOnUseItem() " + e);
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	// XXX EVENT VOTE ------------------------------------------------------------------------------------
@@ -559,7 +589,8 @@ public class EventEngineManager
 	
 	/**
 	 * Obtenemos si la cantidad de jugadores registrados es 0
-	 * @return <li>True - > no hay jugadores registrados.</li><br>
+	 * @return
+	 * 		<li>True - > no hay jugadores registrados.</li><br>
 	 *         <li>False - > hay al menos un jugador registrado.</li><br>
 	 */
 	public boolean isEmptyRegisteredPlayers()
@@ -569,7 +600,8 @@ public class EventEngineManager
 	
 	/**
 	 * Obtenemos si el jugador se encuentra registrado
-	 * @return <li>True - > Está registrado.</li><br>
+	 * @return
+	 * 		<li>True - > Está registrado.</li><br>
 	 *         <li>False - > No está registrado.</li><br>
 	 */
 	public boolean isRegistered(L2PcInstance player)
@@ -580,7 +612,8 @@ public class EventEngineManager
 	/**
 	 * Agregamos un player al registro
 	 * @param player
-	 * @return <li>True - > si el registro es exitoso.</li><br>
+	 * @return
+	 * 		<li>True - > si el registro es exitoso.</li><br>
 	 *         <li>False - > si el player ya estaba registrado.</li><br>
 	 */
 	public boolean registerPlayer(L2PcInstance player)
@@ -591,7 +624,8 @@ public class EventEngineManager
 	/**
 	 * Eliminamos un player del registro
 	 * @param player
-	 * @return <li>True - > si el player estaba registrado.</li><br>
+	 * @return
+	 * 		<li>True - > si el player estaba registrado.</li><br>
 	 *         <li>False - > si el player no estaba registrado.</li><br>
 	 */
 	public boolean unRegisterPlayer(L2PcInstance player)
