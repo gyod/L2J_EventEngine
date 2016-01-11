@@ -29,8 +29,8 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
-import com.l2jserver.gameserver.model.Location;
-import com.l2jserver.gameserver.model.holders.ItemHolder;
+import com.l2jmobius.gameserver.model.Location;
+import com.l2jmobius.gameserver.model.holders.ItemHolder;
 
 /**
  * Simplifies loading of property files and adds logging if a non existing property is requested.

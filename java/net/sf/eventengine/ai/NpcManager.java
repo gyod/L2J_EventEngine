@@ -21,14 +21,14 @@ package net.sf.eventengine.ai;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import com.l2jserver.gameserver.model.actor.L2Npc;
-import com.l2jserver.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jserver.gameserver.model.entity.L2Event;
-import com.l2jserver.gameserver.model.entity.TvTEvent;
-import com.l2jserver.gameserver.model.holders.SkillHolder;
-import com.l2jserver.gameserver.model.quest.Quest;
-import com.l2jserver.gameserver.network.serverpackets.NpcHtmlMessage;
-import com.l2jserver.util.StringUtil;
+import com.l2jmobius.gameserver.model.actor.L2Npc;
+import com.l2jmobius.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jmobius.gameserver.model.entity.L2Event;
+import com.l2jmobius.gameserver.model.entity.TvTEvent;
+import com.l2jmobius.gameserver.model.holders.SkillHolder;
+import com.l2jmobius.gameserver.model.quest.Quest;
+import com.l2jmobius.gameserver.network.serverpackets.NpcHtmlMessage;
+import com.l2jmobius.util.StringUtil;
 
 import net.sf.eventengine.EventEngineManager;
 import net.sf.eventengine.datatables.BuffListData;
@@ -415,12 +415,14 @@ public class NpcManager extends Quest
 			player.sendMessage(MessageData.getInstance().getMsgByLang(player, "observerMode", true));
 			return false;
 		}
+/* festival feature is not implemented
 		// Check in festival
 		else if (player.isFestivalParticipant())
 		{
 			player.sendMessage(MessageData.getInstance().getMsgByLang(player, "festivalMode", true));
 			return false;
 		}
+*/
 		// Check in Events
 		else if (L2Event.isParticipant(player))
 		{
@@ -434,7 +436,8 @@ public class NpcManager extends Quest
 			return false;
 		}
 		// Check player state
-		else if ((player.getPvpFlag() > 0) || (player.isInCombat()) || (player.isInDuel()) || (player.getKarma() > 0) || (player.isCursedWeaponEquipped()))
+		// player.getKarma() is not implemented
+		else if ((player.getPvpFlag() > 0) || (player.isInCombat()) || (player.isInDuel()) || (player.getReputation() > 0) || (player.isCursedWeaponEquipped()))
 		{
 			// Check properties
 			if (!ConfigData.getInstance().EVENT_CHAOTIC_PLAYER_REGISTER)

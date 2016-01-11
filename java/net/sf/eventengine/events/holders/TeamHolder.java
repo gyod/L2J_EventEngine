@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import net.sf.eventengine.enums.TeamType;
 import net.sf.eventengine.interfaces.ParticipantHolder;
 
-import com.l2jserver.gameserver.model.Location;
+import com.l2jmobius.gameserver.model.Location;
 
 /**
  * @author fissban

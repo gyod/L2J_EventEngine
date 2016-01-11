@@ -10,7 +10,7 @@ import net.sf.eventengine.enums.TeamType;
 import net.sf.eventengine.events.holders.PlayerHolder;
 import net.sf.eventengine.events.holders.TeamHolder;
 
-import com.l2jserver.gameserver.model.Location;
+import com.l2jmobius.gameserver.model.Location;
 
 public class TeamsBuilder
 {

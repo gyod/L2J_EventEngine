@@ -18,7 +18,7 @@
  */
 package net.sf.eventengine;
 
-import com.l2jserver.gameserver.model.instancezone.InstanceWorld;
+import com.l2jmobius.gameserver.model.instancezone.InstanceWorld;
 
 /**
  * @author fissban

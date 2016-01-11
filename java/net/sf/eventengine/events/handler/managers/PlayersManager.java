@@ -26,10 +26,10 @@ import net.sf.eventengine.EventEngineManager;
 import net.sf.eventengine.events.holders.PlayerHolder;
 import net.sf.eventengine.events.listeners.EventEngineListener;
 
-import com.l2jserver.gameserver.model.actor.L2Character;
-import com.l2jserver.gameserver.model.actor.L2Playable;
-import com.l2jserver.gameserver.model.actor.L2Summon;
-import com.l2jserver.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jmobius.gameserver.model.actor.L2Character;
+import com.l2jmobius.gameserver.model.actor.L2Playable;
+import com.l2jmobius.gameserver.model.actor.L2Summon;
+import com.l2jmobius.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * @author fissban

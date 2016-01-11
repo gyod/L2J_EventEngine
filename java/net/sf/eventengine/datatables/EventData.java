@@ -11,7 +11,7 @@ import net.sf.eventengine.events.Survive;
 import net.sf.eventengine.events.TeamVsTeam;
 import net.sf.eventengine.events.handler.AbstractEvent;
 
-import com.l2jserver.util.Rnd;
+import com.l2jmobius.util.Rnd;
 
 /**
  * @author Zephyr

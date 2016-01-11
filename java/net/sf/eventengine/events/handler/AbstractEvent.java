@@ -20,9 +20,27 @@ package net.sf.eventengine.events.handler;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Logger;
+
+import com.l2jmobius.gameserver.ThreadPoolManager;
+import com.l2jmobius.gameserver.instancemanager.InstanceManager;
+import com.l2jmobius.gameserver.model.Location;
+import com.l2jmobius.gameserver.model.actor.L2Character;
+import com.l2jmobius.gameserver.model.actor.L2Npc;
+import com.l2jmobius.gameserver.model.actor.L2Playable;
+import com.l2jmobius.gameserver.model.actor.L2Summon;
+import com.l2jmobius.gameserver.model.actor.instance.L2CubicInstance;
+import com.l2jmobius.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jmobius.gameserver.model.holders.ItemHolder;
+import com.l2jmobius.gameserver.model.holders.SkillHolder;
+import com.l2jmobius.gameserver.model.instancezone.InstanceWorld;
+import com.l2jmobius.gameserver.model.items.L2Item;
+import com.l2jmobius.gameserver.model.skills.Skill;
+import com.l2jmobius.gameserver.taskmanager.DecayTaskManager;
+import com.l2jmobius.util.Rnd;
 
 import net.sf.eventengine.EventEngineManager;
 import net.sf.eventengine.builders.TeamsBuilder;
@@ -46,22 +64,6 @@ import net.sf.eventengine.events.schedules.ChangeToEndEvent;
 import net.sf.eventengine.events.schedules.ChangeToFightEvent;
 import net.sf.eventengine.events.schedules.ChangeToStartEvent;
 import net.sf.eventengine.util.EventUtil;
-
-import com.l2jserver.gameserver.ThreadPoolManager;
-import com.l2jserver.gameserver.instancemanager.InstanceManager;
-import com.l2jserver.gameserver.model.Location;
-import com.l2jserver.gameserver.model.actor.L2Character;
-import com.l2jserver.gameserver.model.actor.L2Npc;
-import com.l2jserver.gameserver.model.actor.L2Playable;
-import com.l2jserver.gameserver.model.actor.instance.L2CubicInstance;
-import com.l2jserver.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jserver.gameserver.model.holders.ItemHolder;
-import com.l2jserver.gameserver.model.holders.SkillHolder;
-import com.l2jserver.gameserver.model.instancezone.InstanceWorld;
-import com.l2jserver.gameserver.model.items.L2Item;
-import com.l2jserver.gameserver.model.skills.Skill;
-import com.l2jserver.gameserver.taskmanager.DecayTaskManager;
-import com.l2jserver.util.Rnd;
 
 /**
  * @author fissban
@@ -727,10 +729,14 @@ public abstract class AbstractEvent
 	{
 		ph.getPcInstance().stopAllEffects();
 		
-		if (ph.getPcInstance().getSummon() != null)
+		Map<Integer, L2Summon> servitors = ph.getPcInstance().getServitors();
+		if (servitors != null)
 		{
-			ph.getPcInstance().getSummon().stopAllEffects();
-			ph.getPcInstance().getSummon().unSummon(ph.getPcInstance());
+			for (L2Summon servitor : servitors.values())
+			{
+				servitor.stopAllEffects();
+				servitor.unSummon(ph.getPcInstance());
+			}
 		}
 		
 		// Cancel all character cubics

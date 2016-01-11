@@ -24,7 +24,7 @@ import java.util.List;
 import net.sf.eventengine.EventEngineManager;
 import net.sf.eventengine.events.holders.PlayerHolder;
 
-import com.l2jserver.gameserver.network.serverpackets.L2GameServerPacket;
+import com.l2jmobius.gameserver.network.serverpackets.L2GameServerPacket;
 
 /**
  * @author Synerge

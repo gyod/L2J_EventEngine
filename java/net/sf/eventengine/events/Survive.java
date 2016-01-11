@@ -20,6 +20,12 @@ package net.sf.eventengine.events;
 
 import java.util.List;
 
+import com.l2jmobius.gameserver.ThreadPoolManager;
+import com.l2jmobius.gameserver.enums.ChatType;
+import com.l2jmobius.gameserver.enums.Team;
+import com.l2jmobius.gameserver.model.actor.L2Character;
+import com.l2jmobius.util.Rnd;
+
 import net.sf.eventengine.builders.TeamsBuilder;
 import net.sf.eventengine.datatables.ConfigData;
 import net.sf.eventengine.enums.CollectionTarget;
@@ -29,12 +35,6 @@ import net.sf.eventengine.events.holders.PlayerHolder;
 import net.sf.eventengine.events.holders.TeamHolder;
 import net.sf.eventengine.util.EventUtil;
 import net.sf.eventengine.util.SortUtils;
-
-import com.l2jserver.gameserver.ThreadPoolManager;
-import com.l2jserver.gameserver.enums.Team;
-import com.l2jserver.gameserver.model.actor.L2Character;
-import com.l2jserver.gameserver.network.clientpackets.Say2;
-import com.l2jserver.util.Rnd;
 
 /**
  * Event survival<br>
@@ -153,18 +153,18 @@ public class Survive extends AbstractEvent
 		{
 			if (teamWinners.contains(team))
 			{
-				EventUtil.announceTo(Say2.BATTLEFIELD, "team_winner", "%holder%", team.getTeamType().name(), CollectionTarget.ALL_PLAYERS_IN_EVENT);
+				EventUtil.announceTo(ChatType.BATTLEFIELD, "team_winner", "%holder%", team.getTeamType().name(), CollectionTarget.ALL_PLAYERS_IN_EVENT);
 			}
 			else
 			{
-				EventUtil.announceTo(Say2.BATTLEFIELD, "teams_tie", "%holder%", team.getTeamType().name(), CollectionTarget.ALL_PLAYERS_IN_EVENT);
+				EventUtil.announceTo(ChatType.BATTLEFIELD, "teams_tie", "%holder%", team.getTeamType().name(), CollectionTarget.ALL_PLAYERS_IN_EVENT);
 			}
 		}
 	}
 	
 	private void spawnsMobs()
 	{
-		EventUtil.announceTo(Say2.BATTLEFIELD, "survive_spawns_mobs", CollectionTarget.ALL_PLAYERS_IN_EVENT);
+		EventUtil.announceTo(ChatType.BATTLEFIELD, "survive_spawns_mobs", CollectionTarget.ALL_PLAYERS_IN_EVENT);
 		
 		// After 5 secs spawn run.
 		ThreadPoolManager.getInstance().scheduleGeneral(() ->
@@ -180,7 +180,7 @@ public class Survive extends AbstractEvent
 				// FIXME agregar al sistema de lang
 				EventUtil.sendEventScreenMessage(ph, "Stage " + _stage, 5000);
 			}
-		}, 5000L);
+		} , 5000L);
 		
 	}
 	

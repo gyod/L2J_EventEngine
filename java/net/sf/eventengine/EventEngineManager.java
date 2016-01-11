@@ -27,6 +27,18 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
+import com.l2jmobius.gameserver.ThreadPoolManager;
+import com.l2jmobius.gameserver.enums.ChatType;
+import com.l2jmobius.gameserver.model.Location;
+import com.l2jmobius.gameserver.model.actor.L2Character;
+import com.l2jmobius.gameserver.model.actor.L2Npc;
+import com.l2jmobius.gameserver.model.actor.L2Playable;
+import com.l2jmobius.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jmobius.gameserver.model.items.L2Item;
+import com.l2jmobius.gameserver.model.skills.Skill;
+import com.l2jmobius.gameserver.network.serverpackets.CreatureSay;
+import com.l2jmobius.util.Rnd;
+
 import net.sf.eventengine.adapter.EventEngineAdapter;
 import net.sf.eventengine.ai.NpcManager;
 import net.sf.eventengine.datatables.BuffListData;
@@ -37,18 +49,6 @@ import net.sf.eventengine.enums.EventEngineState;
 import net.sf.eventengine.events.handler.AbstractEvent;
 import net.sf.eventengine.events.holders.PlayerHolder;
 import net.sf.eventengine.task.EventEngineTask;
-
-import com.l2jserver.gameserver.ThreadPoolManager;
-import com.l2jserver.gameserver.model.Location;
-import com.l2jserver.gameserver.model.actor.L2Character;
-import com.l2jserver.gameserver.model.actor.L2Npc;
-import com.l2jserver.gameserver.model.actor.L2Playable;
-import com.l2jserver.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jserver.gameserver.model.items.L2Item;
-import com.l2jserver.gameserver.model.skills.Skill;
-import com.l2jserver.gameserver.network.clientpackets.Say2;
-import com.l2jserver.gameserver.network.serverpackets.CreatureSay;
-import com.l2jserver.util.Rnd;
 
 /**
  * @author fissban
@@ -306,8 +306,8 @@ public class EventEngineManager
 	public void listenerOnLogin(L2PcInstance player)
 	{
 		returnPlayerDisconnected(player);
-		player.sendPacket(new CreatureSay(0, Say2.PARTYROOM_COMMANDER, "", MessageData.getInstance().getMsgByLang(player, "event_login_participate", true)));
-		player.sendPacket(new CreatureSay(0, Say2.PARTYROOM_COMMANDER, "", MessageData.getInstance().getMsgByLang(player, "event_login_vote", true)));
+		player.sendPacket(new CreatureSay(0, ChatType.PARTYROOM_COMMANDER, "", MessageData.getInstance().getMsgByLang(player, "event_login_participate", true)));
+		player.sendPacket(new CreatureSay(0, ChatType.PARTYROOM_COMMANDER, "", MessageData.getInstance().getMsgByLang(player, "event_login_vote", true)));
 	}
 	
 	/**
@@ -383,7 +383,7 @@ public class EventEngineManager
 	}
 	
 	/**
-	 * Disminuímos la cantidad de votos
+	 * Disminuï¿½mos la cantidad de votos
 	 * @param player -> personaje q esta votando
 	 * @return
 	 */
@@ -392,7 +392,7 @@ public class EventEngineManager
 		// Lo borra de la lista de jugadores que votaron
 		if (_playersAlreadyVoted.remove(player.getObjectId()))
 		{
-			// Si estaba en la lista, empieza a buscar para qué evento votó
+			// Si estaba en la lista, empieza a buscar para quï¿½ evento votï¿½
 			for (Class<? extends AbstractEvent> event : _currentEventVotes.keySet())
 			{
 				_currentEventVotes.get(event).remove(player.getObjectId());
@@ -428,7 +428,7 @@ public class EventEngineManager
 	/**
 	 * Obtenemos el evento con mayor votos<br>
 	 * En caso de tener todos la misma cant de votos se hace un random<br>
-	 * entre los que más votos tienen<br>
+	 * entre los que mï¿½s votos tienen<br>
 	 * @return
 	 */
 	public Class<? extends AbstractEvent> getEventMoreVotes()
@@ -527,7 +527,7 @@ public class EventEngineManager
 	private final Set<L2PcInstance> _eventRegisterdPlayers = ConcurrentHashMap.newKeySet();
 	
 	/**
-	 * Obtenemos la colección de jugadores registrados
+	 * Obtenemos la colecciï¿½n de jugadores registrados
 	 * @return Collection<L2PcInstance>
 	 */
 	public Collection<L2PcInstance> getAllRegisteredPlayers()
@@ -536,7 +536,7 @@ public class EventEngineManager
 	}
 	
 	/**
-	 * Limpia la colección de jugadores
+	 * Limpia la colecciï¿½n de jugadores
 	 * @return
 	 */
 	public void clearRegisteredPlayers()
@@ -556,8 +556,8 @@ public class EventEngineManager
 	
 	/**
 	 * Obtenemos si el jugador se encuentra registrado
-	 * @return <li>True - > Está registrado.</li><br>
-	 *         <li>False - > No está registrado.</li><br>
+	 * @return <li>True - > Estï¿½ registrado.</li><br>
+	 *         <li>False - > No estï¿½ registrado.</li><br>
 	 */
 	public boolean isRegistered(L2PcInstance player)
 	{

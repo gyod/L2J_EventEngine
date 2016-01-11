@@ -20,6 +20,9 @@ package net.sf.eventengine.events;
 
 import java.util.List;
 
+import com.l2jmobius.gameserver.enums.ChatType;
+import com.l2jmobius.gameserver.model.actor.L2Character;
+
 import net.sf.eventengine.builders.TeamsBuilder;
 import net.sf.eventengine.datatables.ConfigData;
 import net.sf.eventengine.datatables.MessageData;
@@ -30,9 +33,6 @@ import net.sf.eventengine.events.holders.PlayerHolder;
 import net.sf.eventengine.events.holders.TeamHolder;
 import net.sf.eventengine.util.EventUtil;
 import net.sf.eventengine.util.SortUtils;
-
-import com.l2jserver.gameserver.model.actor.L2Character;
-import com.l2jserver.gameserver.network.clientpackets.Say2;
 
 /**
  * @author fissban
@@ -145,7 +145,7 @@ public class TeamVsTeam extends AbstractEvent
 		{
 			if (teamWinners.contains(team))
 			{
-				EventUtil.announceTo(Say2.BATTLEFIELD, "team_winner", "%holder%", team.getTeamType().name(), CollectionTarget.ALL_PLAYERS_IN_EVENT);
+				EventUtil.announceTo(ChatType.BATTLEFIELD, "team_winner", "%holder%", team.getTeamType().name(), CollectionTarget.ALL_PLAYERS_IN_EVENT);
 			}
 		}
 	}

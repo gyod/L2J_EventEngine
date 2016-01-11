@@ -23,16 +23,16 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 
+import com.l2jmobius.gameserver.ThreadPoolManager;
+import com.l2jmobius.gameserver.enums.ChatType;
+import com.l2jmobius.gameserver.model.Location;
+
 import net.sf.eventengine.EventEngineManager;
 import net.sf.eventengine.datatables.ConfigData;
 import net.sf.eventengine.enums.CollectionTarget;
 import net.sf.eventengine.events.handler.AbstractEvent;
 import net.sf.eventengine.events.holders.PlayerHolder;
 import net.sf.eventengine.util.EventUtil;
-
-import com.l2jserver.gameserver.ThreadPoolManager;
-import com.l2jserver.gameserver.model.Location;
-import com.l2jserver.gameserver.network.clientpackets.Say2;
 
 /**
  * System that runs for every x time if the players are afk.<br>
@@ -81,7 +81,7 @@ public class AntiAfkManager
 						currentEvent.cancelAllEffects(ph);
 						currentEvent.removePlayerFromEvent(ph, true);
 						EventUtil.sendMessageToPlayer(ph, "antiafk_player_kicked");
-						EventUtil.announceTo(Say2.SHOUT, "antiafk_player_kicked_announce", "%player%", ph.getPcInstance().getName(), CollectionTarget.ALL_PLAYERS_IN_EVENT);
+						EventUtil.announceTo(ChatType.SHOUT, "antiafk_player_kicked_announce", "%player%", ph.getPcInstance().getName(), CollectionTarget.ALL_PLAYERS_IN_EVENT);
 						continue;
 					}
 				}

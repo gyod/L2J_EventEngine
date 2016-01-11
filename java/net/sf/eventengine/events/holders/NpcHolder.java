@@ -18,7 +18,7 @@
  */
 package net.sf.eventengine.events.holders;
 
-import com.l2jserver.gameserver.model.actor.L2Npc;
+import com.l2jmobius.gameserver.model.actor.L2Npc;
 
 /**
  * Clase encargada de administrar toda la informacion de los Npc de los eventos.

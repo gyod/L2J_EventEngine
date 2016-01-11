@@ -18,11 +18,11 @@
  */
 package net.sf.eventengine.events.schedules;
 
+import com.l2jmobius.gameserver.enums.ChatType;
+
 import net.sf.eventengine.enums.CollectionTarget;
 import net.sf.eventengine.events.schedules.interfaces.EventScheduled;
 import net.sf.eventengine.util.EventUtil;
-
-import com.l2jserver.gameserver.network.clientpackets.Say2;
 
 /**
  * @author Zephyr
@@ -48,6 +48,6 @@ public class AnnounceNearEndEvent implements EventScheduled
 	@Override
 	public void run()
 	{
-		EventUtil.announceTo(Say2.CRITICAL_ANNOUNCE, "event_end_soon", "%time%", String.valueOf(_timeAnnounce), CollectionTarget.ALL_PLAYERS_IN_EVENT);
+		EventUtil.announceTo(ChatType.CRITICAL_ANNOUNCE, "event_end_soon", "%time%", String.valueOf(_timeAnnounce), CollectionTarget.ALL_PLAYERS_IN_EVENT);
 	}
 }

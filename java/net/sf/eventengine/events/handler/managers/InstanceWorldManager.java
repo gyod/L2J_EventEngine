@@ -25,9 +25,9 @@ import java.util.logging.Logger;
 import net.sf.eventengine.EventEngineManager;
 import net.sf.eventengine.EventEngineWorld;
 
-import com.l2jserver.gameserver.instancemanager.InstanceManager;
-import com.l2jserver.gameserver.model.actor.instance.L2DoorInstance;
-import com.l2jserver.gameserver.model.instancezone.InstanceWorld;
+import com.l2jmobius.gameserver.instancemanager.InstanceManager;
+import com.l2jmobius.gameserver.model.actor.instance.L2DoorInstance;
+import com.l2jmobius.gameserver.model.instancezone.InstanceWorld;
 
 /**
  * @author fissban

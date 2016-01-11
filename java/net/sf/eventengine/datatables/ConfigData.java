@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 
 import net.sf.eventengine.util.EventPropertiesParser;
 
-import com.l2jserver.gameserver.model.Location;
-import com.l2jserver.gameserver.model.holders.ItemHolder;
+import com.l2jmobius.gameserver.model.Location;
+import com.l2jmobius.gameserver.model.holders.ItemHolder;
 
 /**
  * Load the config from "properties"

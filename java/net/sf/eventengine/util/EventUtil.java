@@ -26,22 +26,22 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.l2jmobius.gameserver.datatables.SpawnTable;
+import com.l2jmobius.gameserver.enums.ChatType;
+import com.l2jmobius.gameserver.model.L2Spawn;
+import com.l2jmobius.gameserver.model.L2World;
+import com.l2jmobius.gameserver.model.actor.L2Character;
+import com.l2jmobius.gameserver.model.actor.L2Npc;
+import com.l2jmobius.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jmobius.gameserver.network.serverpackets.CreatureSay;
+import com.l2jmobius.gameserver.network.serverpackets.ExEventMatchMessage;
+import com.l2jmobius.gameserver.network.serverpackets.ExShowScreenMessage;
+
 import net.sf.eventengine.EventEngineManager;
 import net.sf.eventengine.datatables.ConfigData;
 import net.sf.eventengine.datatables.MessageData;
 import net.sf.eventengine.enums.CollectionTarget;
 import net.sf.eventengine.events.holders.PlayerHolder;
-
-import com.l2jserver.gameserver.datatables.SpawnTable;
-import com.l2jserver.gameserver.model.L2Spawn;
-import com.l2jserver.gameserver.model.L2World;
-import com.l2jserver.gameserver.model.actor.L2Character;
-import com.l2jserver.gameserver.model.actor.L2Npc;
-import com.l2jserver.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jserver.gameserver.network.clientpackets.Say2;
-import com.l2jserver.gameserver.network.serverpackets.CreatureSay;
-import com.l2jserver.gameserver.network.serverpackets.ExEventMatchMessage;
-import com.l2jserver.gameserver.network.serverpackets.ExShowScreenMessage;
 
 /**
  * @author fissban, Zephyr
@@ -73,132 +73,132 @@ public class EventUtil
 	 * Announce a message replacing the %time% holder by time and another holder
 	 * @param time
 	 * @param textId
-	 * @param say2
+	 * @param chatType
 	 * @param type
 	 */
-	public static void announceTime(int time, String textId, int say2, CollectionTarget type)
+	public static void announceTime(int time, String textId, ChatType chatType, CollectionTarget type)
 	{
-		announce(say2, textId, null, type, null, time);
+		announce(chatType, textId, null, type, null, time);
 	}
 	
 	/**
 	 * Announce a message replacing the %time% holder by time and another holder
 	 * @param time
 	 * @param textId
-	 * @param say2
+	 * @param chatType
 	 * @param target
 	 * @param replace
 	 * @param type
 	 */
-	public static void announceTime(int time, String textId, int say2, String target, String replace, CollectionTarget type)
+	public static void announceTime(int time, String textId, ChatType chatType, String target, String replace, CollectionTarget type)
 	{
 		Map<String, String> map = new HashMap<>();
 		map.put(target, replace);
-		announce(say2, textId, map, type, null, time);
+		announce(chatType, textId, map, type, null, time);
 	}
 	
 	/**
 	 * Announce a message replacing the %time% holder by time and another holders inside the map
 	 * @param time
 	 * @param textId
-	 * @param say2
+	 * @param chatType
 	 * @param map
 	 * @param type
 	 */
-	public static void announceTime(int time, String textId, int say2, Map<String, String> mapToReplace, CollectionTarget type)
+	public static void announceTime(int time, String textId, ChatType chatType, Map<String, String> mapToReplace, CollectionTarget type)
 	{
-		announce(say2, textId, mapToReplace, type, null, time);
+		announce(chatType, textId, mapToReplace, type, null, time);
 	}
 	
 	/**
 	 * Announce a message
-	 * @param say2
+	 * @param chatType
 	 * @param textId
 	 * @param type
 	 */
-	public static void announceTo(int say2, String text, CollectionTarget type)
+	public static void announceTo(ChatType chatType, String text, CollectionTarget type)
 	{
-		announce(say2, text, null, type, null, -1);
+		announce(chatType, text, null, type, null, -1);
 	}
 	
 	/**
 	 * Announce a message replacing just a text holder
-	 * @param say2
+	 * @param chatType
 	 * @param textId
 	 * @param target
 	 * @parm replace
 	 * @param type
 	 */
-	public static void announceTo(int say2, String text, String replace, String textReplace, CollectionTarget type)
+	public static void announceTo(ChatType chatType, String text, String replace, String textReplace, CollectionTarget type)
 	{
 		Map<String, String> map = new HashMap<>();
 		map.put(replace, textReplace);
-		announce(say2, text, map, type, null, -1);
+		announce(chatType, text, map, type, null, -1);
 	}
 	
 	/**
 	 * Announce a message replacing the text holders
-	 * @param say2
+	 * @param chatType
 	 * @param textId
 	 * @param map
 	 * @param type
 	 */
-	public static void announceTo(int say2, String text, Map<String, String> map, CollectionTarget type)
+	public static void announceTo(ChatType chatType, String text, Map<String, String> map, CollectionTarget type)
 	{
-		announce(say2, text, map, type, null, -1);
+		announce(chatType, text, map, type, null, -1);
 	}
 	
 	/**
 	 * Announce a message by npc
-	 * @param say2
+	 * @param chatType
 	 * @param textId
 	 * @param type
 	 * @param npcId
 	 */
-	public static void npcAnnounceTo(int say2, String text, CollectionTarget type, int npcId)
+	public static void npcAnnounceTo(ChatType chatType, String text, CollectionTarget type, int npcId)
 	{
-		announce(say2, text, null, type, getNpcSpawned(npcId), -1);
+		announce(chatType, text, null, type, getNpcSpawned(npcId), -1);
 	}
 	
 	/**
 	 * Announce a message by npc replacing just a holder
-	 * @param say2
+	 * @param chatType
 	 * @param textId
 	 * @param target
 	 * @param replace
 	 * @param type
 	 * @param npcId
 	 */
-	public static void npcAnnounceTo(int say2, String text, String replace, String textReplace, CollectionTarget type, int npcId)
+	public static void npcAnnounceTo(ChatType chatType, String text, String replace, String textReplace, CollectionTarget type, int npcId)
 	{
 		Map<String, String> map = new HashMap<>();
 		map.put(replace, textReplace);
-		announce(say2, text, map, type, getNpcSpawned(npcId), -1);
+		announce(chatType, text, map, type, getNpcSpawned(npcId), -1);
 	}
 	
 	/**
 	 * Announce a message by npc replacing a map of holders
-	 * @param say2
+	 * @param chatType
 	 * @param textId
 	 * @param map
 	 * @param type
 	 * @param npcId
 	 */
-	public static void npcAnnounceTo(int say2, String text, Map<String, String> map, CollectionTarget type, int npcId)
+	public static void npcAnnounceTo(ChatType chatType, String text, Map<String, String> map, CollectionTarget type, int npcId)
 	{
-		announce(say2, text, map, type, getNpcSpawned(npcId), -1);
+		announce(chatType, text, map, type, getNpcSpawned(npcId), -1);
 	}
 	
 	/**
 	 * Announce the proper message for each player
-	 * @param say2
+	 * @param chatType
 	 * @param textId
 	 * @param map
 	 * @param type
 	 * @param npcs
 	 * @param time
 	 */
-	private static void announce(int say2, String textId, Map<String, String> mapToReplace, CollectionTarget type, Set<L2Npc> npcs, int time)
+	private static void announce(ChatType chatType, String textId, Map<String, String> mapToReplace, CollectionTarget type, Set<L2Npc> npcs, int time)
 	{
 		if (time > -1 && !TIME_LEFT_TO_ANNOUNCE.contains(time))
 		{
@@ -212,7 +212,7 @@ public class EventUtil
 			case ALL_PLAYERS_IN_EVENT:
 				for (L2PcInstance player : getPlayersCollection(type))
 				{
-					player.sendPacket(new CreatureSay(0, say2, "", getAnnounce(player, textId, mapToReplace, time)));
+					player.sendPacket(new CreatureSay(0, chatType, "", getAnnounce(player, textId, mapToReplace, time)));
 				}
 				break;
 			case ALL_NEAR_PLAYERS:
@@ -228,7 +228,7 @@ public class EventUtil
 				{
 					for (L2PcInstance player : npcPlayerMap.get(npc))
 					{
-						player.sendPacket(new CreatureSay(npc.getObjectId(), 18, npc.getName(), getAnnounce(player, textId, mapToReplace, time)));
+						player.sendPacket(new CreatureSay(npc.getObjectId(), ChatType.CRITICAL_ANNOUNCE, npc.getName(), getAnnounce(player, textId, mapToReplace, time)));
 					}
 				}
 				break;
@@ -347,7 +347,7 @@ public class EventUtil
 	 */
 	public static void sendEventMessage(PlayerHolder player, String text)
 	{
-		player.getPcInstance().sendPacket(new CreatureSay(0, Say2.PARTYROOM_COMMANDER, "", text));
+		player.getPcInstance().sendPacket(new CreatureSay(0, ChatType.PARTYROOM_COMMANDER, "", text));
 	}
 	
 	/**
@@ -411,7 +411,7 @@ public class EventUtil
 		Map<String, String> map = new HashMap<>();
 		map.put("%killer%", player.getPcInstance().getName());
 		map.put("%target%", target.getName());
-		EventUtil.announceTo(Say2.TRADE, "event_player_killer", map, CollectionTarget.ALL_PLAYERS_IN_EVENT);
+		EventUtil.announceTo(ChatType.TRADE, "event_player_killer", map, CollectionTarget.ALL_PLAYERS_IN_EVENT);
 	}
 	
 	/**

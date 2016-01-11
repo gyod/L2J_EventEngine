@@ -3,6 +3,7 @@
 	<name>L2J_EventEngine</name>
 	<comment></comment>
 	<projects>
+		<project>L2J_Mobius</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

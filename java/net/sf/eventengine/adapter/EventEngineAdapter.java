@@ -3,23 +3,23 @@ package net.sf.eventengine.adapter;
 import net.sf.eventengine.EventEngineManager;
 import net.sf.eventengine.ai.NpcManager;
 
-import com.l2jserver.gameserver.model.actor.L2Playable;
-import com.l2jserver.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jserver.gameserver.model.events.EventType;
-import com.l2jserver.gameserver.model.events.ListenerRegisterType;
-import com.l2jserver.gameserver.model.events.annotations.Priority;
-import com.l2jserver.gameserver.model.events.annotations.Range;
-import com.l2jserver.gameserver.model.events.annotations.RegisterEvent;
-import com.l2jserver.gameserver.model.events.annotations.RegisterType;
-import com.l2jserver.gameserver.model.events.impl.character.OnCreatureAttack;
-import com.l2jserver.gameserver.model.events.impl.character.OnCreatureKill;
-import com.l2jserver.gameserver.model.events.impl.character.OnCreatureSkillUse;
-import com.l2jserver.gameserver.model.events.impl.character.npc.OnNpcFirstTalk;
-import com.l2jserver.gameserver.model.events.impl.character.player.OnPlayerEquipItem;
-import com.l2jserver.gameserver.model.events.impl.character.player.OnPlayerLogin;
-import com.l2jserver.gameserver.model.events.impl.character.player.OnPlayerLogout;
-import com.l2jserver.gameserver.model.events.returns.TerminateReturn;
-import com.l2jserver.gameserver.model.quest.Quest;
+import com.l2jmobius.gameserver.model.actor.L2Playable;
+import com.l2jmobius.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jmobius.gameserver.model.events.EventType;
+import com.l2jmobius.gameserver.model.events.ListenerRegisterType;
+import com.l2jmobius.gameserver.model.events.annotations.Priority;
+import com.l2jmobius.gameserver.model.events.annotations.Range;
+import com.l2jmobius.gameserver.model.events.annotations.RegisterEvent;
+import com.l2jmobius.gameserver.model.events.annotations.RegisterType;
+import com.l2jmobius.gameserver.model.events.impl.character.OnCreatureAttack;
+import com.l2jmobius.gameserver.model.events.impl.character.OnCreatureKill;
+import com.l2jmobius.gameserver.model.events.impl.character.OnCreatureSkillUse;
+import com.l2jmobius.gameserver.model.events.impl.character.npc.OnNpcFirstTalk;
+import com.l2jmobius.gameserver.model.events.impl.character.player.OnPlayerEquipItem;
+import com.l2jmobius.gameserver.model.events.impl.character.player.OnPlayerLogin;
+import com.l2jmobius.gameserver.model.events.impl.character.player.OnPlayerLogout;
+import com.l2jmobius.gameserver.model.events.returns.TerminateReturn;
+import com.l2jmobius.gameserver.model.quest.Quest;
 
 /**
  * This is an adapter to communicate the L2J Core with Event Engine

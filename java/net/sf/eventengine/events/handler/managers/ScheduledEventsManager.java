@@ -26,7 +26,7 @@ import java.util.concurrent.ScheduledFuture;
 
 import net.sf.eventengine.events.schedules.interfaces.EventScheduled;
 
-import com.l2jserver.gameserver.ThreadPoolManager;
+import com.l2jmobius.gameserver.ThreadPoolManager;
 
 /**
  * @author Zephyr

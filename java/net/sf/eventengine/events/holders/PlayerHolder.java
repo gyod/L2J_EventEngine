@@ -21,8 +21,8 @@ package net.sf.eventengine.events.holders;
 import net.sf.eventengine.enums.TeamType;
 import net.sf.eventengine.interfaces.ParticipantHolder;
 
-import com.l2jserver.gameserver.model.Location;
-import com.l2jserver.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jmobius.gameserver.model.Location;
+import com.l2jmobius.gameserver.model.actor.instance.L2PcInstance;
 
 /**
  * It manages player's info that participates in an event

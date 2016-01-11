@@ -1,7 +1,7 @@
 package net.sf.eventengine.events.listeners;
 
-import com.l2jserver.gameserver.model.actor.instance.L2PcInstance;
-import com.l2jserver.gameserver.model.interfaces.IEventListener;
+import com.l2jmobius.gameserver.model.actor.instance.L2PcInstance;
+import com.l2jmobius.gameserver.model.interfaces.IEventListener;
 
 /**
  * @author Zephyr

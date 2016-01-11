@@ -1,43 +1,54 @@
-diff --git a/src/main/java/com/l2jserver/gameserver/model/olympiad/AbstractOlympiadGame.java b/src/main/java/com/l2jserver/gameserver/model/olympiad/AbstractOlympiadGame.java
-index 14354b1..dbc234a 100644
---- a/src/main/java/com/l2jserver/gameserver/model/olympiad/AbstractOlympiadGame.java
-+++ b/src/main/java/com/l2jserver/gameserver/model/olympiad/AbstractOlympiadGame.java
-@@ -22,6 +22,8 @@ import java.util.List;
- import java.util.logging.Level;
- import java.util.logging.Logger;
+Index: .classpath
+===================================================================
+--- .classpath	(revision 1115)
++++ .classpath	(working copy)
+@@ -7,5 +7,6 @@
+ 	<classpathentry kind="lib" path="dist/libs/mysql-connector-java-5.1.38-bin.jar"/>
+ 	<classpathentry including="**/*.java" kind="src" path="dist/game/data/scripts"/>
+ 	<classpathentry kind="src" path="java"/>
++	<classpathentry kind="lib" path="dist/libs/L2J_EventEngine.jar"/>
+ 	<classpathentry kind="output" path="bin"/>
+ </classpath>
+Index: java/com/l2jmobius/gameserver/model/olympiad/AbstractOlympiadGame.java
+===================================================================
+--- java/com/l2jmobius/gameserver/model/olympiad/AbstractOlympiadGame.java	(revision 1115)
++++ java/com/l2jmobius/gameserver/model/olympiad/AbstractOlympiadGame.java	(working copy)
+@@ -42,6 +42,8 @@
+ import com.l2jmobius.gameserver.network.serverpackets.SkillCoolTime;
+ import com.l2jmobius.gameserver.network.serverpackets.SystemMessage;
  
 +import net.sf.eventengine.EventEngineManager;
 +
- import com.l2jserver.Config;
- import com.l2jserver.gameserver.ai.CtrlIntention;
- import com.l2jserver.gameserver.instancemanager.AntiFeedManager;
-@@ -122,6 +124,12 @@ public abstract class AbstractOlympiadGame
- 			return SystemMessage.getSystemMessage(SystemMessageId.THE_GAME_HAS_BEEN_CANCELLED_BECAUSE_THE_OTHER_PARTY_ENDS_THE_GAME);
+ /**
+  * @author godson, GodKratos, Pere, DS
+  */
+@@ -157,6 +159,12 @@
+ 			return SystemMessage.getSystemMessage(SystemMessageId.YOUR_OPPONENT_DOES_NOT_MEET_THE_REQUIREMENTS_TO_DO_BATTLE);
  		}
  		
 +		// L2J EventEngine
 +		if (EventEngineManager.getInstance().isPlayableInEvent(player))
 +		{
-+			return SystemMessage.getSystemMessage(SystemMessageId.THE_GAME_HAS_BEEN_CANCELLED_BECAUSE_THE_OTHER_PARTY_DOES_NOT_MEET_THE_REQUIREMENTS_FOR_JOINING_THE_GAME);
++			return SystemMessage.getSystemMessage(SystemMessageId.YOUR_OPPONENT_DOES_NOT_MEET_THE_REQUIREMENTS_TO_DO_BATTLE);
 +		}
 +		
- 		// safety precautions
- 		if (player.inObserverMode() || TvTEvent.isPlayerParticipant(player.getObjectId()))
- 		{
-diff --git a/src/main/java/com/l2jserver/gameserver/network/clientpackets/UseItem.java b/src/main/java/com/l2jserver/gameserver/network/clientpackets/UseItem.java
-index 640e695..263f1d7 100644
---- a/src/main/java/com/l2jserver/gameserver/network/clientpackets/UseItem.java
-+++ b/src/main/java/com/l2jserver/gameserver/network/clientpackets/UseItem.java
-@@ -21,6 +21,8 @@ package com.l2jserver.gameserver.network.clientpackets;
- import java.util.concurrent.TimeUnit;
- import java.util.logging.Level;
+ 		return null;
+ 	}
+ 	
+Index: java/com/l2jmobius/gameserver/network/clientpackets/UseItem.java
+===================================================================
+--- java/com/l2jmobius/gameserver/network/clientpackets/UseItem.java	(revision 1115)
++++ java/com/l2jmobius/gameserver/network/clientpackets/UseItem.java	(working copy)
+@@ -46,6 +46,8 @@
+ import com.l2jmobius.gameserver.network.serverpackets.ItemList;
+ import com.l2jmobius.gameserver.network.serverpackets.SystemMessage;
  
 +import net.sf.eventengine.EventEngineManager;
 +
- import com.l2jserver.Config;
- import com.l2jserver.gameserver.ThreadPoolManager;
- import com.l2jserver.gameserver.ai.CtrlEvent;
-@@ -173,6 +175,12 @@ public final class UseItem extends L2GameClientPacket
+ public final class UseItem extends L2GameClientPacket
+ {
+ 	private static final String _C__19_USEITEM = "[C] 19 UseItem";
+@@ -170,6 +172,12 @@
  			}
  		}
  		

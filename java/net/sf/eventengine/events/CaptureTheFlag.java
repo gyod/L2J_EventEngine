@@ -23,6 +23,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.l2jmobius.gameserver.datatables.ItemTable;
+import com.l2jmobius.gameserver.enums.ChatType;
+import com.l2jmobius.gameserver.enums.Team;
+import com.l2jmobius.gameserver.model.actor.L2Character;
+import com.l2jmobius.gameserver.model.itemcontainer.Inventory;
+import com.l2jmobius.gameserver.model.items.L2Item;
+import com.l2jmobius.gameserver.model.items.L2Weapon;
+import com.l2jmobius.gameserver.model.items.instance.L2ItemInstance;
+import com.l2jmobius.gameserver.network.serverpackets.MagicSkillUse;
+
 import net.sf.eventengine.builders.TeamsBuilder;
 import net.sf.eventengine.datatables.ConfigData;
 import net.sf.eventengine.datatables.MessageData;
@@ -35,16 +45,6 @@ import net.sf.eventengine.events.holders.PlayerHolder;
 import net.sf.eventengine.events.holders.TeamHolder;
 import net.sf.eventengine.util.EventUtil;
 import net.sf.eventengine.util.SortUtils;
-
-import com.l2jserver.gameserver.datatables.ItemTable;
-import com.l2jserver.gameserver.enums.Team;
-import com.l2jserver.gameserver.model.actor.L2Character;
-import com.l2jserver.gameserver.model.itemcontainer.Inventory;
-import com.l2jserver.gameserver.model.items.L2Item;
-import com.l2jserver.gameserver.model.items.L2Weapon;
-import com.l2jserver.gameserver.model.items.instance.L2ItemInstance;
-import com.l2jserver.gameserver.network.clientpackets.Say2;
-import com.l2jserver.gameserver.network.serverpackets.MagicSkillUse;
 
 /**
  * @author fissban
@@ -129,7 +129,7 @@ public class CaptureTheFlag extends AbstractEvent
 				// Equip the flag
 				equipFlag(ph, flagTeam);
 				// Announce the flag was taken
-				EventUtil.announceTo(Say2.BATTLEFIELD, "ctf_captured_the_flag", "%holder%", flagTeam.name(), CollectionTarget.ALL_PLAYERS_IN_EVENT);
+				EventUtil.announceTo(ChatType.BATTLEFIELD, "ctf_captured_the_flag", "%holder%", flagTeam.name(), CollectionTarget.ALL_PLAYERS_IN_EVENT);
 			}
 		}
 		else if (npcHolder.getNpcInstance().getId() == HOLDER)
@@ -149,7 +149,7 @@ public class CaptureTheFlag extends AbstractEvent
 					// Spawn the flag again
 					_flagSpawn.put(getSpawnManager().addEventNpc(FLAG, th.getSpawn().getX(), th.getSpawn().getY(), th.getSpawn().getZ(), 0, Team.NONE, th.getTeamType().name(), false, getInstanceWorldManager().getAllInstancesWorlds().get(0).getInstanceId()), th.getTeamType());
 					// Announce the flag was taken
-					EventUtil.announceTo(Say2.BATTLEFIELD, "ctf_conquered_the_flag", "%holder%", th.getTeamType().name(), CollectionTarget.ALL_PLAYERS_IN_EVENT);
+					EventUtil.announceTo(ChatType.BATTLEFIELD, "ctf_conquered_the_flag", "%holder%", th.getTeamType().name(), CollectionTarget.ALL_PLAYERS_IN_EVENT);
 					// Show team points
 					showPoint();
 				}
@@ -284,7 +284,7 @@ public class CaptureTheFlag extends AbstractEvent
 		{
 			if (teamWinners.contains(team))
 			{
-				EventUtil.announceTo(Say2.BATTLEFIELD, "team_winner", "%holder%", team.getTeamType().name(), CollectionTarget.ALL_PLAYERS_IN_EVENT);
+				EventUtil.announceTo(ChatType.BATTLEFIELD, "team_winner", "%holder%", team.getTeamType().name(), CollectionTarget.ALL_PLAYERS_IN_EVENT);
 			}
 		}
 	}
@@ -360,7 +360,7 @@ public class CaptureTheFlag extends AbstractEvent
 		// We announced that a flag was taken
 		map.put("%holder%", ph.getPcInstance().getName());
 		map.put("%flag%", th.getTeamType().name());
-		EventUtil.announceTo(Say2.BATTLEFIELD, "player_dropped_flag", map, CollectionTarget.ALL_PLAYERS_IN_EVENT);
+		EventUtil.announceTo(ChatType.BATTLEFIELD, "player_dropped_flag", map, CollectionTarget.ALL_PLAYERS_IN_EVENT);
 	}
 	
 	/**

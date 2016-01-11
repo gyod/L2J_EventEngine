@@ -18,7 +18,7 @@
  */
 package net.sf.eventengine.events.schedules;
 
-import com.l2jserver.gameserver.network.clientpackets.Say2;
+import com.l2jmobius.gameserver.enums.ChatType;
 
 import net.sf.eventengine.enums.CollectionTarget;
 import net.sf.eventengine.events.schedules.interfaces.EventScheduled;
@@ -46,6 +46,6 @@ public class AnnounceTeleportEvent implements EventScheduled
 	@Override
 	public void run()
 	{
-		EventUtil.announceTo(Say2.CRITICAL_ANNOUNCE, "teleport_seconds", CollectionTarget.ALL_PLAYERS_IN_EVENT);
+		EventUtil.announceTo(ChatType.CRITICAL_ANNOUNCE, "teleport_seconds", CollectionTarget.ALL_PLAYERS_IN_EVENT);
 	}
 }
