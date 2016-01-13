@@ -1,18 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../xsd/npcs.xsd">
-	<npc id="36600" displayId="32226" name="EventEngine" usingServerSideName="true" title="L2J" usingServerSideTitle="true" type="L2Npc">
+	<npc id="46600" displayId="32226" name="EventEngine" usingServerSideName="true" title="L2J" usingServerSideTitle="true" type="L2Npc">
+		<parameters>
+			<param name="MoveAroundSocial" value="0" />
+			<param name="MoveAroundSocial1" value="130" />
+			<param name="gender" value="2" />
+			<param name="chk_my_cat" value="SUB_GROUP_KAMAEL" />
+		</parameters>
+		<race>KAMAEL</race>
+		<sex>FEMALE</sex>
+		<equipment rhand="9644" /> <!-- rhand: For NPC (Crossbow) -->
+		<stats str="40" int="21" dex="30" wit="20" con="43" men="20">
+			<vitals hp="2444.46819" hpRegen="7.5" mp="1345.8" mpRegen="2.7" />
+			<attack physical="688.86373" magical="470.40463" random="10" critical="4" accuracy="5" attackSpeed="253" type="FIST" range="40" distance="80" width="120" />
+			<defence physical="295.91597" magical="216.53847" />
+			<attribute>
+				<defence fire="150" water="150" wind="150" earth="150" holy="150" dark="150" default="150" />
+			</attribute>
+			<speed>
+				<walk ground="28" />
+				<run ground="120" />
+			</speed>
+		</stats>
+		<status attackable="false" canMove="false" />
+		<skillList>
+			<skill id="4045" level="1" /> <!-- Resist Full Magic Attack -->
+			<skill id="4408" level="1" /> <!-- HP Increase (1x) -->
+			<skill id="4409" level="1" /> <!-- MP Increase (1x) -->
+			<skill id="4410" level="11" /> <!-- Average P. Atk. -->
+			<skill id="4411" level="11" /> <!-- Average M. Atk. -->
+			<skill id="4412" level="11" /> <!-- Average P. Def. -->
+			<skill id="4413" level="11" /> <!-- Average M. Def. -->
+			<skill id="4414" level="2" /> <!-- Standard Type -->
+			<skill id="4415" level="1" /> <!-- Bare Hands -->
+			<skill id="4416" level="25" /> <!-- Kamael -->
+		</skillList>
+		<exCrtEffect>true</exCrtEffect>
+		<ai type="BALANCED" clanHelpRange="300" isAggressive="false" />
 		<collision>
 			<radius normal="11" />
 			<height normal="22.25" />
 		</collision>
 	</npc>
-	<npc id="36601" displayId="35062" name="Flag" usingServerSideName="true" title="" usingServerSideTitle="false" type="L2Npc">
+	<npc id="46601" displayId="35062" name="Flag" usingServerSideName="true" title="" usingServerSideTitle="false" type="L2Npc">
+		<parameters>
+			<param name="MoveAroundSocial" value="0" />
+			<param name="MoveAroundSocial1" value="0" />
+		</parameters>
+		<race>ETC</race>
+		<sex>ETC</sex>
+		<stats str="40" int="21" dex="30" wit="20" con="43" men="20">
+			<vitals hp="39.74519" hpRegen="2" mp="40.0" mpRegen="0.9" />
+			<attack physical="8.47458" magical="5.78704" random="30" critical="4" accuracy="4.75" attackSpeed="253" type="SWORD" range="40" distance="80" width="120" />
+			<defence physical="44.44444" magical="32.52252" />
+			<attribute>
+				<defence fire="20" water="20" wind="20" earth="20" holy="20" dark="20" />
+			</attribute>
+			<speed>
+				<walk ground="50" />
+				<run ground="120" />
+			</speed>
+		</stats>
+		<status attackable="false" undying="false" canMove="false" />
+		<skillList>
+			<skill id="4045" level="1" /> <!-- Resist Full Magic Attack -->
+			<skill id="4390" level="1" /> <!-- NPC Abnormal Immunity -->
+			<skill id="4408" level="1" /> <!-- HP Increase (1x) -->
+			<skill id="4409" level="1" /> <!-- MP Increase (1x) -->
+			<skill id="4410" level="11" /> <!-- Average P. Atk. -->
+			<skill id="4411" level="11" /> <!-- Average M. Atk. -->
+			<skill id="4412" level="11" /> <!-- Average P. Def. -->
+			<skill id="4413" level="11" /> <!-- Average M. Def. -->
+			<skill id="4414" level="2" /> <!-- Standard Type -->
+			<skill id="4415" level="3" /> <!-- One-handed Sword -->
+			<skill id="4416" level="19" /> <!-- Others -->
+		</skillList>
+		<exCrtEffect>true</exCrtEffect>
+		<ai aggroRange="500" clanHelpRange="1000" />
 		<collision>
 			<radius normal="11" />
 			<height normal="22.25" />
 		</collision>
 	</npc>
-	<npc id="36603" displayId="32027" name="Holder" usingServerSideName="true" title="" usingServerSideTitle="false" type="L2Npc">
+	<npc id="46603" displayId="32027" name="Holder" usingServerSideName="true" title="" usingServerSideTitle="false" type="L2Npc">
+		<race>ETC</race>
+		<sex>ETC</sex>
+		<stats str="40" int="21" dex="30" wit="20" con="43" men="20">
+			<vitals hp="2974.35686398316" hpRegen="8.5" mp="1607.4" mpRegen="3" />
+			<attack physical="890.50085998804" magical="608.096657928153" random="10" critical="4" accuracy="5" attackSpeed="253" type="FIST" range="40" distance="80" width="120" />
+			<defence physical="332.70061" magical="243.45587" />
+			<attribute>
+				<defence fire="150" water="150" wind="150" earth="150" holy="150" dark="150" default="150" />
+			</attribute>
+			<speed>
+				<walk ground="50" />
+				<run ground="120" />
+			</speed>
+		</stats>
+		<status undying="false" />
+		<skillList>
+			<skill id="4045" level="1" /> <!-- Resist Full Magic Attack -->
+			<skill id="4390" level="1" /> <!-- NPC Abnormal Immunity -->
+			<skill id="4408" level="18" /> <!-- HP Increase (10x) -->
+			<skill id="4409" level="1" /> <!-- MP Increase (1x) -->
+			<skill id="4410" level="11" /> <!-- Average P. Atk. -->
+			<skill id="4411" level="11" /> <!-- Average M. Atk. -->
+			<skill id="4412" level="11" /> <!-- Average P. Def. -->
+			<skill id="4413" level="11" /> <!-- Average M. Def. -->
+			<skill id="4414" level="2" /> <!-- Standard Type -->
+			<skill id="4415" level="1" /> <!-- Bare Hands -->
+			<skill id="4416" level="19" /> <!-- Others -->
+		</skillList>
+		<exCrtEffect>true</exCrtEffect>
+		<sNpcPropHpRate>10</sNpcPropHpRate>
 		<collision>
 			<radius normal="11" />
 			<height normal="22.25" />
